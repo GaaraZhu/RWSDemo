@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+
+	<!-- used to test R/W Splitting in MYSQL, can be routed by transaction 
+		type(read only or not) -->
+	<persistence-unit name="MASTER_000" transaction-type="RESOURCE_LOCAL">
+		<provider>
+            org.eclipse.persistence.jpa.PersistenceProvider
+        </provider>
+		<exclude-unlisted-classes>false</exclude-unlisted-classes>
+		<properties>
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/rws_db" />
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="" />
+			<!-- Minimal connections in internal pool -->
+			<property name="eclipselink.jdbc.read-connections.min"
+				value="1" />
+			<property name="eclipselink.jdbc.write-connections.min"
+				value="1" />
+			<property name="eclipselink.jdbc.batch-writing" value="JDBC" />
+			<property name="eclipselink.logging.level" value="FINE" />
+			<property name="eclipselink.logging.thread" value="false" />
+			<property name="eclipselink.logging.session" value="false" />
+			<property name="eclipselink.logging.exceptions" value="false" />
+			<property name="eclipselink.logging.timestamp" value="false" />
+		</properties>
+	</persistence-unit>
+
+	<persistence-unit name="SLAVE_000" transaction-type="RESOURCE_LOCAL">
+		<provider>
+            org.eclipse.persistence.jpa.PersistenceProvider
+        </provider>
+		<exclude-unlisted-classes>false</exclude-unlisted-classes>
+		<properties>
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://146.222.51.163:3306/rws_db" />
+			<property name="javax.persistence.jdbc.user" value="zhuga3" />
+			<property name="javax.persistence.jdbc.password" value="Gmail123" />
+			<!-- Minimal connections in internal pool -->
+			<property name="eclipselink.jdbc.read-connections.min"
+				value="1" />
+			<property name="eclipselink.jdbc.write-connections.min"
+				value="1" />
+			<property name="eclipselink.jdbc.batch-writing" value="JDBC" />
+			<property name="eclipselink.logging.level" value="FINE" />
+			<property name="eclipselink.logging.thread" value="false" />
+			<property name="eclipselink.logging.session" value="false" />
+			<property name="eclipselink.logging.exceptions" value="false" />
+			<property name="eclipselink.logging.timestamp" value="false" />
+		</properties>
+	</persistence-unit>
+
+</persistence>
