@@ -14,18 +14,20 @@ public class RWSTransactionManager extends AbstractPlatformTransactionManager {
 
 	@Override
 	protected Object doGetTransaction() throws TransactionException {
-		return new RWSJPATransactionObject();
+		RWSJPATransactionObject rwsTransaction = new RWSJPATransactionObject();
+		EntityManager entityManager = EntityManagerHolder.getInstance()
+				.initializeResource(definition.isReadOnly());
+		EntityTransaction transaction = entityManager.getTransaction();
+		rwsTransaction.setTransaction(transaction);
+
+		return rwsTransaction;
 	}
 
 	@Override
 	protected void doBegin(Object txObject, TransactionDefinition definition)
 			throws TransactionException {
 		RWSJPATransactionObject rwsTransaction = (RWSJPATransactionObject) txObject;
-		EntityManager entityManager = EntityManagerHolder.getInstance()
-				.initializeResource(definition.isReadOnly());
-		EntityTransaction transaction = entityManager.getTransaction();
-		rwsTransaction.setTransaction(transaction);
-
+		
 		if (!definition.isReadOnly()) {
 			rwsTransaction.getTransaction().begin();
 		}
